@@ -1,17 +1,17 @@
 /**
  * Export Module
- * Handles copying tasks as formatted text
+ * Handles copying and generating formatted text output
  */
 
 import { state } from './state.js';
 import { getTotalPlannedHours, showToast } from './ui.js';
 
 /**
- * Copy all tasks as formatted text to clipboard
+ * Generate formatted text from current state
  */
-export function copyAsText() {
+export function generateText() {
   let text = '';
-  const total = parseFloat(document.getElementById('totalHours').value) || 0;
+  const total = parseFloat(document.getElementById('totalHours')?.value) || 0;
   const planned = getTotalPlannedHours();
 
   text += `Total: ${total}h | Planned: ${planned}h\n`;
@@ -46,7 +46,15 @@ export function copyAsText() {
     }
   });
 
-  navigator.clipboard.writeText(text.trim()).then(() => {
+  return text.trim();
+}
+
+/**
+ * Copy all tasks as formatted text to clipboard
+ */
+export function copyAsText() {
+  const text = generateText();
+  navigator.clipboard.writeText(text).then(() => {
     showToast('Copied to clipboard!');
   });
 }

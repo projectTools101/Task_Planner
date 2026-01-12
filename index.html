@@ -7,42 +7,50 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Task Planner</h1>
-      <div class="hours-input-group">
-        <label for="totalHours">Total Hours:</label>
-        <input type="number" id="totalHours" value="40" min="0" step="0.5">
-        <span>h</span>
+  <div class="container main-layout">
+    <main class="planner-section">
+      <header>
+        <h1>Task Planner</h1>
+        <div class="hours-input-group">
+          <label for="totalHours">Total Hours:</label>
+          <input type="number" id="totalHours" value="40" min="0" step="0.5">
+          <span>h</span>
+        </div>
+      </header>
+
+      <section class="progress-section">
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-text">
+          <span id="plannedHours">0h planned</span>
+          <span id="remainingHours" class="remaining">40h remaining</span>
+        </div>
+      </section>
+
+      <div class="toolbar">
+        <button onclick="window.taskPlanner.addGroup()" class="secondary">
+          + Add Group
+        </button>
+        <button onclick="window.taskPlanner.addTaskAsGroup()">
+          + Add Task
+        </button>
       </div>
-    </header>
 
-    <section class="progress-section">
-      <div class="progress-bar-container">
-        <div class="progress-bar" id="progressBar"></div>
+      <div class="task-list" id="taskList"></div>
+    </main>
+
+    <aside class="preview-section">
+      <div class="preview-header">
+        <h2>Live Preview</h2>
+        <button onclick="window.taskPlanner.copyAsText()" class="success">
+          Copy Text
+        </button>
       </div>
-      <div class="progress-text">
-        <span id="plannedHours">0h planned</span>
-        <span id="remainingHours" class="remaining">40h remaining</span>
+      <div class="preview-content">
+        <pre id="outputText"></pre>
       </div>
-    </section>
-
-    <div class="toolbar">
-      <button onclick="window.taskPlanner.addGroup()" class="secondary">
-        + Add Group
-      </button>
-      <button onclick="window.taskPlanner.addTaskAsGroup()">
-        + Add Task
-      </button>
-    </div>
-
-    <div class="task-list" id="taskList"></div>
-
-    <div class="copy-section">
-      <button onclick="window.taskPlanner.copyAsText()" class="success">
-        Copy as Text
-      </button>
-    </div>
+    </aside>
   </div>
 
   <div class="toast" id="toast">Copied to clipboard!</div>

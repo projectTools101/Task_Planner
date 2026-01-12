@@ -4,7 +4,7 @@
  */
 
 import { state, saveToStorage } from './state.js';
-import { render } from './ui.js';
+import { render, updateProgress } from './ui.js';
 import { createTask } from './tasks.js';
 
 /**
@@ -67,6 +67,7 @@ export function updateGroupTitle(groupId, title) {
   const group = state.groups.find(g => g.id === groupId);
   if (group) {
     group.title = title;
+    updateProgress();
     saveToStorage();
   }
 }
@@ -78,6 +79,7 @@ export function updateGroupMode(groupId, mode) {
   const group = state.groups.find(g => g.id === groupId);
   if (group) {
     group.mode = mode;
+    updateProgress();
     saveToStorage();
   }
 }

@@ -1,11 +1,7 @@
-/**
- * UI Rendering Module
- * Handles all DOM rendering and UI updates
- */
-
 import { state, saveToStorage } from './state.js';
 import { getGroupHours } from './groups.js';
 import { setupGroupDragEvents } from './dragdrop.js';
+import { generateText } from './export.js';
 
 /**
  * Escape HTML to prevent XSS
@@ -26,23 +22,36 @@ export function getTotalPlannedHours() {
 }
 
 /**
- * Update the progress bar and text
+ * Update the progress bar, text and live preview
  */
 export function updateProgress() {
-  const total = parseFloat(document.getElementById('totalHours').value) || 0;
+  const total = parseFloat(document.getElementById('totalHours')?.value) || 0;
   const planned = getTotalPlannedHours();
   const remaining = total - planned;
   const percentage = total > 0 ? Math.min((planned / total) * 100, 100) : 0;
 
   const progressBar = document.getElementById('progressBar');
-  progressBar.style.width = percentage + '%';
-  progressBar.classList.toggle('over', planned > total);
+  if (progressBar) {
+    progressBar.style.width = percentage + '%';
+    progressBar.classList.toggle('over', planned > total);
+  }
 
-  document.getElementById('plannedHours').textContent = planned.toFixed(1).replace(/\.0$/, '') + 'h planned';
+  const plannedHoursEl = document.getElementById('plannedHours');
+  if (plannedHoursEl) {
+    plannedHoursEl.textContent = planned.toFixed(1).replace(/\.0$/, '') + 'h planned';
+  }
   
   const remainingEl = document.getElementById('remainingHours');
-  remainingEl.textContent = remaining.toFixed(1).replace(/\.0$/, '') + 'h remaining';
-  remainingEl.classList.toggle('over', remaining < 0);
+  if (remainingEl) {
+    remainingEl.textContent = remaining.toFixed(1).replace(/\.0$/, '') + 'h remaining';
+    remainingEl.classList.toggle('over', remaining < 0);
+  }
+
+  // Update live preview
+  const outputTextEl = document.getElementById('outputText');
+  if (outputTextEl) {
+    outputTextEl.textContent = generateText();
+  }
 
   saveToStorage();
 }

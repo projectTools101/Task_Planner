@@ -50,10 +50,10 @@ export function updateTask(groupId, taskId, field, value) {
     if (task) {
       if (field === 'hours') {
         task[field] = parseFloat(value) || 0;
-        updateProgress();
       } else {
         task[field] = value;
       }
+      updateProgress();
       saveToStorage();
     }
   }
