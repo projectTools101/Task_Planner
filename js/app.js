@@ -6,7 +6,7 @@
 import { loadFromStorage } from './state.js';
 import { render, updateProgress } from './ui.js';
 import { addGroup, addTaskAsGroup, updateGroupTitle, updateGroupMode, deleteGroup } from './groups.js';
-import { addTaskToGroup, updateTask, deleteTask } from './tasks.js';
+import { addTaskToGroup, updateTask, deleteTask, adjustHours } from './tasks.js';
 import { copyAsText } from './export.js';
 
 /**
@@ -33,6 +33,7 @@ window.taskPlanner = {
   addTaskToGroup,
   updateTask,
   deleteTask,
+  adjustHours,
   copyAsText
 };
 

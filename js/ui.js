@@ -53,6 +53,29 @@ export function updateProgress() {
     outputTextEl.textContent = generateText();
   }
 
+  // Update individual group hour trackers
+  state.groups.forEach(group => {
+    const groupEl = document.querySelector(`.group[data-group-id="${group.id}"]`);
+    if (groupEl) {
+      const hoursEl = groupEl.querySelector('.group-hours');
+      if (hoursEl) {
+        const groupHours = getGroupHours(group.id);
+        hoursEl.textContent = groupHours.toFixed(1).replace(/\.0$/, '') + 'h';
+      }
+
+      // Update individual task hour inputs
+      group.tasks.forEach(task => {
+        const taskEl = groupEl.querySelector(`.task[data-task-id="${task.id}"]`);
+        if (taskEl) {
+          const input = taskEl.querySelector('.task-hours input');
+          if (input && input.value !== task.hours.toString()) {
+            input.value = task.hours;
+          }
+        }
+      });
+    }
+  });
+
   saveToStorage();
 }
 
@@ -77,8 +100,10 @@ function renderTask(groupId, task) {
              value="${escapeHtml(task.name)}"
              oninput="window.taskPlanner.updateTask('${groupId}', ${task.id}, 'name', this.value)">
       <div class="task-hours">
+        <button class="hour-btn" onclick="window.taskPlanner.adjustHours('${groupId}', ${task.id}, -0.5)">-</button>
         <input type="number" value="${task.hours}" min="0" step="0.5"
                oninput="window.taskPlanner.updateTask('${groupId}', ${task.id}, 'hours', this.value)">
+        <button class="hour-btn" onclick="window.taskPlanner.adjustHours('${groupId}', ${task.id}, 0.5)">+</button>
         <span>h</span>
       </div>
       <button class="delete-task-btn" onclick="window.taskPlanner.deleteTask('${groupId}', ${task.id})" title="Delete task">✕</button>

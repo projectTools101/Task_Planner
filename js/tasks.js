@@ -71,3 +71,18 @@ export function deleteTask(groupId, taskId) {
     saveToStorage();
   }
 }
+/**
+ * Adjust a task's hours by a specific amount
+ */
+export function adjustHours(groupId, taskId, delta) {
+  const numericGroupId = parseInt(groupId, 10);
+  const group = state.groups.find(g => g.id === numericGroupId);
+  if (group) {
+    const task = group.tasks.find(t => t.id === taskId);
+    if (task) {
+      task.hours = Math.max(0, (task.hours || 0) + delta);
+      updateProgress();
+      saveToStorage();
+    }
+  }
+}

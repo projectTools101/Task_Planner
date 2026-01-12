@@ -397,10 +397,39 @@ button.success:hover {
   font-size: 0.9rem;
 }
 
+.hour-btn {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.hour-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
 .task-hours input {
-  width: 50px;
-  padding: 0.25rem 0.4rem;
+  width: 45px;
+  padding: 0.25rem;
   font-size: 0.9rem;
+  height: 24px;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.task-hours input::-webkit-outer-spin-button,
+.task-hours input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .delete-task-btn {
