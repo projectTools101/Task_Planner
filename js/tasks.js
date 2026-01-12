@@ -3,7 +3,7 @@
  * Handles task CRUD operations
  */
 
-import { state, saveToStorage } from './state.js';
+import { state } from './state.js';
 import { render, updateProgress } from './ui.js';
 
 /**
@@ -26,7 +26,6 @@ export function addTaskToGroup(groupId) {
   if (group) {
     group.tasks.push(createTask());
     render();
-    saveToStorage();
     
     // Focus the new task's name input
     setTimeout(() => {
@@ -54,7 +53,6 @@ export function updateTask(groupId, taskId, field, value) {
         task[field] = value;
       }
       updateProgress();
-      saveToStorage();
     }
   }
 }
@@ -68,9 +66,9 @@ export function deleteTask(groupId, taskId) {
   if (group) {
     group.tasks = group.tasks.filter(t => t.id !== taskId);
     render();
-    saveToStorage();
   }
 }
+
 /**
  * Adjust a task's hours by a specific amount
  */
@@ -82,7 +80,6 @@ export function adjustHours(groupId, taskId, delta) {
     if (task) {
       task.hours = Math.max(0, (task.hours || 0) + delta);
       updateProgress();
-      saveToStorage();
     }
   }
 }

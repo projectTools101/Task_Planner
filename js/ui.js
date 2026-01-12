@@ -1,4 +1,4 @@
-import { state, saveToStorage } from './state.js';
+import { state } from './state.js';
 import { getGroupHours } from './groups.js';
 import { setupGroupDragEvents } from './dragdrop.js';
 import { generateText } from './export.js';
@@ -75,8 +75,6 @@ export function updateProgress() {
       });
     }
   });
-
-  saveToStorage();
 }
 
 /**

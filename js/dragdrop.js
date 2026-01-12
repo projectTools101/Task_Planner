@@ -3,7 +3,7 @@
  * Handles all drag-and-drop functionality
  */
 
-import { state, saveToStorage } from './state.js';
+import { state } from './state.js';
 import { render } from './ui.js';
 
 // Drag state
@@ -69,7 +69,6 @@ export function setupGroupDragEvents(groupEl) {
         const [moved] = state.groups.splice(fromIndex, 1);
         state.groups.splice(toIndex, 0, moved);
         render();
-        saveToStorage();
       }
     }
   });
@@ -170,7 +169,6 @@ export function setupTaskDragEvents(container) {
     }
 
     render();
-    saveToStorage();
   });
 }
 

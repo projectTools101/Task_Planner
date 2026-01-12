@@ -507,3 +507,28 @@ button.success:hover {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Disclaimer Footer */
+.disclaimer {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  border-top: 1px solid var(--bg-tertiary);
+  text-align: center;
+}
+
+.disclaimer p {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.disclaimer span {
+  color: var(--warning);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+}

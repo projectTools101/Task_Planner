@@ -3,7 +3,7 @@
  * Handles group CRUD operations
  */
 
-import { state, saveToStorage } from './state.js';
+import { state } from './state.js';
 import { render, updateProgress } from './ui.js';
 import { createTask } from './tasks.js';
 
@@ -32,7 +32,6 @@ export function createGroup(title = '', withTask = false) {
 export function addGroup() {
   state.groups.push(createGroup());
   render();
-  saveToStorage();
   
   // Focus the new group's title input
   setTimeout(() => {
@@ -47,7 +46,6 @@ export function addGroup() {
 export function addTaskAsGroup() {
   state.groups.push(createGroup('', true));
   render();
-  saveToStorage();
   
   // Focus the new task's name input
   setTimeout(() => {
@@ -68,7 +66,6 @@ export function updateGroupTitle(groupId, title) {
   if (group) {
     group.title = title;
     updateProgress();
-    saveToStorage();
   }
 }
 
@@ -80,7 +77,6 @@ export function updateGroupMode(groupId, mode) {
   if (group) {
     group.mode = mode;
     updateProgress();
-    saveToStorage();
   }
 }
 
@@ -90,7 +86,6 @@ export function updateGroupMode(groupId, mode) {
 export function deleteGroup(groupId) {
   state.groups = state.groups.filter(g => g.id !== groupId);
   render();
-  saveToStorage();
 }
 
 /**
