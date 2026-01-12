@@ -36,7 +36,7 @@ export function copyAsText() {
       });
       text += '\n';
     } else {
-      // No title
+      // No title - just list tasks
       group.tasks.forEach(task => {
         if (task.name) {
           text += `${task.name} - ${task.hours}h\n`;
@@ -45,14 +45,6 @@ export function copyAsText() {
       text += '\n';
     }
   });
-
-  if (state.ungroupedTasks.length > 0) {
-    state.ungroupedTasks.forEach(task => {
-      if (task.name) {
-        text += `${task.name} - ${task.hours}h\n`;
-      }
-    });
-  }
 
   navigator.clipboard.writeText(text.trim()).then(() => {
     showToast('Copied to clipboard!');

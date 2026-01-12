@@ -22,7 +22,6 @@ export function escapeHtml(text) {
 export function getTotalPlannedHours() {
   let total = 0;
   state.groups.forEach(g => g.tasks.forEach(t => total += t.hours));
-  state.ungroupedTasks.forEach(t => total += t.hours);
   return total;
 }
 
@@ -63,14 +62,14 @@ export function showToast(message) {
  */
 function renderTask(groupId, task) {
   return `
-    <div class="task" data-task-id="${task.id}" data-group-id="${groupId}" draggable="true">
+    <div class="task" data-task-id="${task.id}" data-group-id="${groupId}" draggable="false">
       <span class="drag-handle" title="Drag to reorder">⠿</span>
       <input type="text" class="task-name-input" placeholder="Task name" 
              value="${escapeHtml(task.name)}"
-             onchange="window.taskPlanner.updateTask('${groupId}', ${task.id}, 'name', this.value)">
+             oninput="window.taskPlanner.updateTask('${groupId}', ${task.id}, 'name', this.value)">
       <div class="task-hours">
         <input type="number" value="${task.hours}" min="0" step="0.5"
-               onchange="window.taskPlanner.updateTask('${groupId}', ${task.id}, 'hours', this.value)">
+               oninput="window.taskPlanner.updateTask('${groupId}', ${task.id}, 'hours', this.value)">
         <span>h</span>
       </div>
       <button class="delete-task-btn" onclick="window.taskPlanner.deleteTask('${groupId}', ${task.id})" title="Delete task">✕</button>
@@ -85,7 +84,7 @@ function renderGroup(group) {
   const div = document.createElement('div');
   div.className = 'group';
   div.dataset.groupId = group.id;
-  div.draggable = true;
+  div.draggable = false; // Only drag via handle
 
   const groupHours = getGroupHours(group.id);
 
@@ -94,7 +93,7 @@ function renderGroup(group) {
       <span class="drag-handle" title="Drag to reorder">⠿</span>
       <input type="text" class="group-title-input" placeholder="Group title (optional)" 
              value="${escapeHtml(group.title)}" 
-             onchange="window.taskPlanner.updateGroupTitle(${group.id}, this.value)">
+             oninput="window.taskPlanner.updateGroupTitle(${group.id}, this.value)">
       <span class="group-hours">${groupHours.toFixed(1).replace(/\.0$/, '')}h</span>
       <div class="group-options">
         <label>
@@ -123,39 +122,13 @@ function renderGroup(group) {
 }
 
 /**
- * Render the ungrouped tasks section
- */
-function renderUngroupedSection() {
-  const div = document.createElement('div');
-  div.className = 'group';
-  div.dataset.groupId = 'ungrouped';
-
-  const groupHours = getGroupHours('ungrouped');
-
-  div.innerHTML = `
-    <div class="group-header">
-      <span class="drag-handle" style="visibility: hidden;">⠿</span>
-      <span style="flex: 1; color: var(--text-secondary); font-style: italic;">Ungrouped Tasks</span>
-      <span class="group-hours">${groupHours.toFixed(1).replace(/\.0$/, '')}h</span>
-    </div>
-    <div class="tasks-container" data-group-id="ungrouped">
-      ${state.ungroupedTasks.map(task => renderTask('ungrouped', task)).join('')}
-    </div>
-    <button class="add-task-btn" onclick="window.taskPlanner.addTaskToGroup('ungrouped')">+ Add Task</button>
-  `;
-
-  setupGroupDragEvents(div);
-  return div;
-}
-
-/**
  * Main render function
  */
 export function render() {
   const taskList = document.getElementById('taskList');
   
   // Check if empty
-  if (state.groups.length === 0 && state.ungroupedTasks.length === 0) {
+  if (state.groups.length === 0) {
     taskList.innerHTML = `
       <div class="empty-state">
         <p>No tasks yet. Start by adding a group or a task!</p>
@@ -166,15 +139,10 @@ export function render() {
   
   taskList.innerHTML = '';
 
-  // Render groups
+  // Render all groups
   state.groups.forEach(group => {
     taskList.appendChild(renderGroup(group));
   });
-
-  // Render ungrouped tasks
-  if (state.ungroupedTasks.length > 0) {
-    taskList.appendChild(renderUngroupedSection());
-  }
 
   updateProgress();
 }

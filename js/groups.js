@@ -5,21 +5,29 @@
 
 import { state, saveToStorage } from './state.js';
 import { render } from './ui.js';
+import { createTask } from './tasks.js';
 
 /**
  * Create a new group object
  */
-export function createGroup(title = '') {
-  return {
+export function createGroup(title = '', withTask = false) {
+  const group = {
     id: ++state.groupIdCounter,
     title,
     mode: 'heading', // 'prefix' or 'heading'
     tasks: []
   };
+  
+  // Optionally add a starter task
+  if (withTask) {
+    group.tasks.push(createTask());
+  }
+  
+  return group;
 }
 
 /**
- * Add a new group
+ * Add a new empty group
  */
 export function addGroup() {
   state.groups.push(createGroup());
@@ -30,6 +38,25 @@ export function addGroup() {
   setTimeout(() => {
     const inputs = document.querySelectorAll('.group-title-input');
     if (inputs.length) inputs[inputs.length - 1].focus();
+  }, 50);
+}
+
+/**
+ * Add a new group with one task (for "Add Task" button at top level)
+ */
+export function addTaskAsGroup() {
+  state.groups.push(createGroup('', true));
+  render();
+  saveToStorage();
+  
+  // Focus the new task's name input
+  setTimeout(() => {
+    const groups = document.querySelectorAll('.group');
+    if (groups.length) {
+      const lastGroup = groups[groups.length - 1];
+      const taskInput = lastGroup.querySelector('.task-name-input');
+      if (taskInput) taskInput.focus();
+    }
   }, 50);
 }
 
@@ -56,26 +83,18 @@ export function updateGroupMode(groupId, mode) {
 }
 
 /**
- * Delete a group (moves tasks to ungrouped)
+ * Delete a group and all its tasks
  */
 export function deleteGroup(groupId) {
-  const groupIndex = state.groups.findIndex(g => g.id === groupId);
-  if (groupIndex !== -1) {
-    // Move tasks to ungrouped
-    state.ungroupedTasks.push(...state.groups[groupIndex].tasks);
-    state.groups.splice(groupIndex, 1);
-    render();
-    saveToStorage();
-  }
+  state.groups = state.groups.filter(g => g.id !== groupId);
+  render();
+  saveToStorage();
 }
 
 /**
  * Get total hours for a group
  */
 export function getGroupHours(groupId) {
-  if (groupId === 'ungrouped') {
-    return state.ungroupedTasks.reduce((sum, t) => sum + t.hours, 0);
-  }
   const group = state.groups.find(g => g.id === groupId);
   return group ? group.tasks.reduce((sum, t) => sum + t.hours, 0) : 0;
 }

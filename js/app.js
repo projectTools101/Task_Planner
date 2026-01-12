@@ -5,8 +5,8 @@
 
 import { loadFromStorage } from './state.js';
 import { render, updateProgress } from './ui.js';
-import { addGroup, updateGroupTitle, updateGroupMode, deleteGroup } from './groups.js';
-import { addTaskToGroup, addUngroupedTask, updateTask, deleteTask } from './tasks.js';
+import { addGroup, addTaskAsGroup, updateGroupTitle, updateGroupMode, deleteGroup } from './groups.js';
+import { addTaskToGroup, updateTask, deleteTask } from './tasks.js';
 import { copyAsText } from './export.js';
 
 /**
@@ -26,11 +26,11 @@ function init() {
 // Expose API globally for inline event handlers
 window.taskPlanner = {
   addGroup,
+  addTaskAsGroup,
   updateGroupTitle,
   updateGroupMode,
   deleteGroup,
   addTaskToGroup,
-  addUngroupedTask,
   updateTask,
   deleteTask,
   copyAsText

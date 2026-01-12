@@ -17,18 +17,20 @@ let draggedGroupId = null;
 export function setupGroupDragEvents(groupEl) {
   const handle = groupEl.querySelector('.group-header .drag-handle');
   
+  // Only enable dragging when clicking the handle
   if (handle) {
-    handle.addEventListener('mousedown', () => {
+    handle.addEventListener('mousedown', (e) => {
       groupEl.draggable = true;
+    });
+    
+    // Disable dragging when mouse is released
+    handle.addEventListener('mouseup', () => {
+      groupEl.draggable = false;
     });
   }
 
   groupEl.addEventListener('dragstart', (e) => {
     if (e.target.classList.contains('task')) return;
-    if (groupEl.dataset.groupId === 'ungrouped') {
-      e.preventDefault();
-      return;
-    }
     draggedItem = groupEl;
     draggedType = 'group';
     setTimeout(() => groupEl.classList.add('dragging'), 0);
@@ -36,6 +38,7 @@ export function setupGroupDragEvents(groupEl) {
 
   groupEl.addEventListener('dragend', () => {
     groupEl.classList.remove('dragging');
+    groupEl.draggable = false; // Reset draggable
     draggedItem = null;
     draggedType = null;
   });
@@ -57,18 +60,16 @@ export function setupGroupDragEvents(groupEl) {
     
     if (draggedType === 'group' && draggedItem !== groupEl) {
       const fromId = parseInt(draggedItem.dataset.groupId);
-      const toId = groupEl.dataset.groupId === 'ungrouped' ? 'ungrouped' : parseInt(groupEl.dataset.groupId);
+      const toId = parseInt(groupEl.dataset.groupId);
       
-      if (toId !== 'ungrouped') {
-        const fromIndex = state.groups.findIndex(g => g.id === fromId);
-        const toIndex = state.groups.findIndex(g => g.id === toId);
-        
-        if (fromIndex !== -1 && toIndex !== -1) {
-          const [moved] = state.groups.splice(fromIndex, 1);
-          state.groups.splice(toIndex, 0, moved);
-          render();
-          saveToStorage();
-        }
+      const fromIndex = state.groups.findIndex(g => g.id === fromId);
+      const toIndex = state.groups.findIndex(g => g.id === toId);
+      
+      if (fromIndex !== -1 && toIndex !== -1) {
+        const [moved] = state.groups.splice(fromIndex, 1);
+        state.groups.splice(toIndex, 0, moved);
+        render();
+        saveToStorage();
       }
     }
   });
@@ -84,6 +85,20 @@ export function setupGroupDragEvents(groupEl) {
  * Setup drag events for tasks within a container
  */
 export function setupTaskDragEvents(container) {
+  // Setup drag handle for tasks - delegate to handle click
+  container.addEventListener('mousedown', (e) => {
+    const handle = e.target.closest('.task .drag-handle');
+    if (handle) {
+      const task = handle.closest('.task');
+      if (task) task.draggable = true;
+    }
+  });
+  
+  container.addEventListener('mouseup', (e) => {
+    const task = e.target.closest('.task');
+    if (task) task.draggable = false;
+  });
+
   container.addEventListener('dragstart', (e) => {
     if (!e.target.classList.contains('task')) return;
     draggedItem = e.target;
@@ -96,6 +111,7 @@ export function setupTaskDragEvents(container) {
   container.addEventListener('dragend', (e) => {
     if (!e.target.classList.contains('task')) return;
     e.target.classList.remove('dragging');
+    e.target.draggable = false; // Reset draggable
     draggedItem = null;
     draggedType = null;
     draggedGroupId = null;
@@ -127,47 +143,30 @@ export function setupTaskDragEvents(container) {
     
     if (draggedType !== 'task') return;
 
-    const targetGroupId = container.dataset.groupId;
+    const targetGroupId = parseInt(container.dataset.groupId);
     const taskId = parseInt(draggedItem.dataset.taskId);
-    const sourceGroupId = draggedGroupId;
+    const sourceGroupId = parseInt(draggedGroupId);
 
-    // Find and remove task from source
-    let task;
-    if (sourceGroupId === 'ungrouped') {
-      const idx = state.ungroupedTasks.findIndex(t => t.id === taskId);
-      if (idx !== -1) task = state.ungroupedTasks.splice(idx, 1)[0];
-    } else {
-      const sourceGroup = state.groups.find(g => g.id === parseInt(sourceGroupId));
-      if (sourceGroup) {
-        const idx = sourceGroup.tasks.findIndex(t => t.id === taskId);
-        if (idx !== -1) task = sourceGroup.tasks.splice(idx, 1)[0];
-      }
-    }
+    // Find and remove task from source group
+    const sourceGroup = state.groups.find(g => g.id === sourceGroupId);
+    if (!sourceGroup) return;
+    
+    const taskIdx = sourceGroup.tasks.findIndex(t => t.id === taskId);
+    if (taskIdx === -1) return;
+    
+    const [task] = sourceGroup.tasks.splice(taskIdx, 1);
 
-    if (!task) return;
+    // Find target group and insert position
+    const targetGroup = state.groups.find(g => g.id === targetGroupId);
+    if (!targetGroup) return;
 
-    // Find insert position
     const afterElement = getDragAfterElement(container, e.clientY);
-    let insertIndex;
-
-    // Add to target
-    if (targetGroupId === 'ungrouped') {
-      if (afterElement) {
-        insertIndex = state.ungroupedTasks.findIndex(t => t.id === parseInt(afterElement.dataset.taskId));
-        state.ungroupedTasks.splice(insertIndex, 0, task);
-      } else {
-        state.ungroupedTasks.push(task);
-      }
+    
+    if (afterElement) {
+      const insertIndex = targetGroup.tasks.findIndex(t => t.id === parseInt(afterElement.dataset.taskId));
+      targetGroup.tasks.splice(insertIndex, 0, task);
     } else {
-      const targetGroup = state.groups.find(g => g.id === parseInt(targetGroupId));
-      if (targetGroup) {
-        if (afterElement) {
-          insertIndex = targetGroup.tasks.findIndex(t => t.id === parseInt(afterElement.dataset.taskId));
-          targetGroup.tasks.splice(insertIndex, 0, task);
-        } else {
-          targetGroup.tasks.push(task);
-        }
-      }
+      targetGroup.tasks.push(task);
     }
 
     render();
