@@ -2,6 +2,7 @@ import { state } from './state.js';
 import { getGroupHours } from './groups.js';
 import { setupGroupDragEvents } from './dragdrop.js';
 import { generateText } from './export.js';
+import { saveState } from './storage.js';
 
 /**
  * Escape HTML to prevent XSS
@@ -51,6 +52,11 @@ export function updateProgress() {
   const outputTextEl = document.getElementById('outputText');
   if (outputTextEl) {
     outputTextEl.textContent = generateText();
+  }
+
+  // Auto-save if persistence is enabled
+  if (state.persistEnabled) {
+    saveState(state);
   }
 
   // Update individual group hour trackers

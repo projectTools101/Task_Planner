@@ -7,5 +7,6 @@
 export const state = {
   groups: [],
   groupIdCounter: 0,
-  taskIdCounter: 0
+  taskIdCounter: 0,
+  persistEnabled: false
 };
