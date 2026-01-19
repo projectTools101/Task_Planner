@@ -111,6 +111,315 @@ body {
   }
 }
 
+/* Mobile Responsive Styles */
+@media (max-width: 600px) {
+  body {
+    padding: 0.5rem 0.5rem 0;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  .main-layout {
+    gap: 1rem;
+  }
+
+  /* Header - Stack vertically on mobile */
+  header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .hours-input-group {
+    justify-content: center;
+    background: var(--bg-secondary);
+    padding: 0.75rem;
+    border-radius: var(--radius);
+  }
+
+  .hours-input-group label {
+    font-size: 0.85rem;
+  }
+
+  .hours-input-group input[type="number"] {
+    width: 70px;
+    padding: 0.6rem 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .toggle-switch {
+    justify-content: center;
+    padding: 0.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+  }
+
+  /* Progress Section - More compact */
+  .progress-section {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .progress-bar-container {
+    height: 10px;
+  }
+
+  .progress-text {
+    font-size: 0.8rem;
+  }
+
+  /* Toolbar - Full width buttons */
+  .toolbar {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .toolbar button {
+    flex: 1;
+    justify-content: center;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    min-height: 44px; /* Minimum touch target */
+  }
+
+  /* Task List */
+  .task-list {
+    gap: 0.75rem;
+  }
+
+  /* Groups - More compact */
+  .group {
+    padding: 0.75rem;
+  }
+
+  .group-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .drag-handle {
+    font-size: 1rem;
+  }
+
+  .group-title-input {
+    font-size: 0.95rem;
+    min-width: 120px;
+  }
+
+  .group-options {
+    flex-basis: 100%;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding-top: 0.5rem;
+    order: 3;
+  }
+
+  .group-hours {
+    font-size: 0.8rem;
+  }
+
+  .delete-group-btn {
+    padding: 0.5rem;
+    min-width: 36px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Tasks Container */
+  .tasks-container {
+    gap: 0.4rem;
+  }
+
+  /* Task Item - Stack elements for better mobile input */
+  .task {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.5rem;
+  }
+
+  .task .drag-handle {
+    font-size: 0.9rem;
+    padding: 0.25rem;
+  }
+
+  .task-name-input {
+    flex-basis: calc(100% - 70px);
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+    min-height: 40px;
+  }
+
+  /* Task hours - Make more accessible on mobile */
+  .task-hours {
+    flex-basis: 100%;
+    justify-content: flex-end;
+    padding-top: 0.25rem;
+    gap: 0.4rem;
+  }
+
+  .hour-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
+  }
+
+  .task-hours input {
+    width: 55px;
+    height: 32px;
+    font-size: 1rem;
+    padding: 0.4rem;
+  }
+
+  .delete-task-btn {
+    opacity: 1; /* Always visible on mobile */
+    padding: 0.5rem;
+    min-width: 36px;
+    min-height: 36px;
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+  }
+
+  .task {
+    position: relative;
+    padding-right: 2.5rem;
+  }
+
+  .add-task-btn {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+
+  /* Preview Section - Collapsible on mobile */
+  .preview-section {
+    padding: 1rem;
+  }
+
+  .preview-header {
+    padding-bottom: 0.5rem;
+  }
+
+  .preview-header h2 {
+    font-size: 1rem;
+  }
+
+  .preview-header button {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    min-height: 40px;
+  }
+
+  .preview-content {
+    padding: 0.75rem;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  #outputText {
+    font-size: 0.8rem;
+  }
+
+  /* Copy Section */
+  .copy-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .copy-section button {
+    flex: 1;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  /* Toast - Better positioning on mobile */
+  .toast {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    text-align: center;
+  }
+
+  /* Disclaimer */
+  .disclaimer {
+    margin-top: 1rem;
+    padding: 0.75rem 0;
+  }
+
+  .disclaimer p {
+    font-size: 0.75rem;
+    padding: 0 0.5rem;
+  }
+
+  /* General Button Improvements for Touch */
+  button {
+    min-height: 40px;
+  }
+
+  /* Improve input accessibility */
+  input[type="number"] {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  textarea,
+  input[type="text"] {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 380px) {
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  .hours-input-group {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .toolbar {
+    flex-direction: column;
+  }
+
+  .toolbar button {
+    width: 100%;
+  }
+
+  .group-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .task-name-input {
+    flex-basis: 100%;
+    order: 2;
+  }
+
+  .task .drag-handle {
+    order: 1;
+  }
+
+  .task-hours {
+    order: 3;
+  }
+}
+
 /* Header */
 header {
   display: flex;
@@ -161,7 +470,7 @@ h1 {
 }
 
 .toggle-slider::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 2px;
   left: 2px;
@@ -169,7 +478,9 @@ h1 {
   height: 16px;
   background: var(--text-secondary);
   border-radius: 50%;
-  transition: transform 0.2s, background 0.2s;
+  transition:
+    transform 0.2s,
+    background 0.2s;
 }
 
 .toggle-switch input:checked + .toggle-slider {
