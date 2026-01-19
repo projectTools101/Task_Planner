@@ -14,8 +14,8 @@ export function generateText() {
   const total = parseFloat(document.getElementById('totalHours')?.value) || 0;
   const planned = getTotalPlannedHours();
 
-  text += `Total: ${total}h | Planned: ${planned}h\n`;
-  text += '─'.repeat(40) + '\n\n';
+  // text += `Total: ${total}h | Planned: ${planned}h\n`;
+  // text += '─'.repeat(40) + '\n\n';
 
   state.groups.forEach(group => {
     if (group.tasks.length === 0) return;

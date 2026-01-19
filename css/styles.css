@@ -29,14 +29,16 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
-  padding: 2rem 2rem 0;
+  padding: 1rem 1rem 0;
   display: flex;
   flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 80%;
 }
 
 .main-layout {
@@ -49,6 +51,7 @@ body {
 .planner-section {
   flex: 1;
   min-width: 0;
+  width: 100%;
 }
 
 .preview-section {
@@ -90,17 +93,17 @@ body {
 #outputText {
   white-space: pre-wrap;
   word-wrap: break-word;
-  font-family: 'Consolas', 'Monaco', monospace;
+  font-family: "Consolas", "Monaco", monospace;
   font-size: 0.85rem;
   color: var(--text-primary);
   line-height: 1.5;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .main-layout {
     flex-direction: column;
   }
-  
+
   .preview-section {
     width: 100%;
     position: static;
@@ -381,7 +384,12 @@ button.success:hover {
   font-size: 0.95rem;
   flex: 1;
   min-width: 0;
-  padding: 0.2rem 0;
+  padding: 0.4rem 0;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.4;
+  font-family: inherit;
+  display: block;
 }
 
 .task-name-input:focus {
@@ -514,7 +522,7 @@ button.success:hover {
 /* Disclaimer Footer */
 .disclaimer {
   margin-top: 2rem;
-  
+
   padding: 1rem 0;
   border-top: 1px solid var(--bg-tertiary);
   text-align: center;

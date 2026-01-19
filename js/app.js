@@ -3,7 +3,7 @@
  * Initializes the application and exposes global API
  */
 
-import { render, updateProgress } from './ui.js';
+import { render, updateProgress, autoResize } from './ui.js';
 import { addGroup, addTaskAsGroup, updateGroupTitle, updateGroupMode, deleteGroup } from './groups.js';
 import { addTaskToGroup, updateTask, deleteTask, adjustHours } from './tasks.js';
 import { copyAsText } from './export.js';
@@ -31,7 +31,8 @@ window.taskPlanner = {
   updateTask,
   deleteTask,
   adjustHours,
-  copyAsText
+  copyAsText,
+  autoResize
 };
 
 // Initialize when DOM is ready

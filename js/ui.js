@@ -94,9 +94,8 @@ function renderTask(groupId, task) {
   return `
     <div class="task" data-task-id="${task.id}" data-group-id="${groupId}" draggable="false">
       <span class="drag-handle" title="Drag to reorder">⠿</span>
-      <input type="text" class="task-name-input" placeholder="Task name" 
-             value="${escapeHtml(task.name)}"
-             oninput="window.taskPlanner.updateTask('${groupId}', ${task.id}, 'name', this.value)">
+      <textarea class="task-name-input" placeholder="Task name" rows="1"
+             oninput="window.taskPlanner.updateTask('${groupId}', ${task.id}, 'name', this.value); window.taskPlanner.autoResize(this)">${escapeHtml(task.name)}</textarea>
       <div class="task-hours">
         <button class="hour-btn" onclick="window.taskPlanner.adjustHours('${groupId}', ${task.id}, -0.5)">-</button>
         <input type="number" value="${task.hours}" min="0" step="0.5"
@@ -153,6 +152,15 @@ function renderGroup(group) {
   return div;
 }
 
+
+/**
+ * Auto-resize textarea based on content
+ */
+export function autoResize(textarea) {
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + 'px';
+}
+
 /**
  * Main render function
  */
@@ -174,6 +182,11 @@ export function render() {
   // Render all groups
   state.groups.forEach(group => {
     taskList.appendChild(renderGroup(group));
+  });
+
+  // Initial resize for all textareas
+  document.querySelectorAll('.task-name-input').forEach(textarea => {
+    autoResize(textarea);
   });
 
   updateProgress();
